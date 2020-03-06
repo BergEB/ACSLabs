@@ -8,35 +8,24 @@ import static java.lang.System.*;
 public class PartList {
   private TreeMap<Part, Integer> partsMap;
   
-  public PartList() {
-    partsMap = new TreeMap<Part, Integer>();
-  }
-  
   public PartList(String fileName) {
+    partsMap = new TreeMap<Part, Integer>();
     String[] str = loadStrings(fileName);
     for(String s: str) {
       Part i = new Part(s);
-    }
-    
-    try {
-      Scanner scan = new Scanner(new File(fileName));
-    }
-    catch(IOException e) {
-      out.println(e);
-    }
-    catch(RuntimeException e) {
-      out.println(e);
-    }
-    catch(Exception e) {
-      out.println(e);
-    }
-    finally {
-      //keep null
+      if (partsMap.get(i) == null) {
+        partsMap.put(i, 1);
+      } else {
+        partsMap.put(i, partsMap.get(i) + 1);
+      }
     }
   }
   
   public String toString() {
     String output="";
+    for(Part p: partsMap.keySet()) {
+      output+= p + "- " + partsMap.get(p) + "\n";
+    }
     return output;
   }
 }

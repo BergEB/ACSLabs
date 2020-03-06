@@ -4,12 +4,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Scanner;
 import static java.lang.System.*;
-PartList prog;
 
 
 void setup() {
-  prog = new PartList("partinfo.dat");
-  out.println(prog);
+  PartList prog = new PartList("partinfo.dat");
+  println(prog);
 }
 
 public class Part implements Comparable<Part> {
@@ -17,33 +16,45 @@ public class Part implements Comparable<Part> {
   private int year;
 
   public Part(String line) {
+    theRest = "";
     String[] list = line.split(" ");
-    make = list[list.length - 3];
+    year = parseInt(list[list.length - 1]);
     model = list[list.length - 2];
-    year = Integer.parseInt(list[list.length - 1]);
-    for(int i = 0; i < list.length - 3; i++) {
-      theRest+= list[i];
+    make = list[list.length - 3];
+    if (list.length == 6) {
+      for(int i = 0; i < 3; i++) {
+        theRest+= list[i] + " ";
+      }
+    } else {
+      for(int i = 0; i < 2; i++) {
+        theRest+= list[i] + " ";
+      }
     }
   }
 
   public int compareTo(Part other) {
     if(this.make.compareTo(other.make) > 0) {
-    } else if (this.make.compareTo(other.make) < 0) {
+      return 1;
+    }
+    if (this.make.compareTo(other.make) < 0) {
       return -1;
     }
     if (this.model.compareTo(other.model) > 0) {
-    } else if (this.model.compareTo(other.model) < 0) {
+      return 1;
+    }
+    if (this.model.compareTo(other.model) < 0) {
       return -1;
     }
-    if (this.theRest.compareTo(other.theRest) > 0) {
-      return -1;
-    } else if (this.theRest.compareTo(other.theRest) < 0) {
+    if (year > other.year) {
+      return 1;
+    }
+    if (year < other.year) {
       return -1;
     }
-    return 0;
+    return theRest.compareTo(other.theRest);
   }
 
   public String toString() {
-    return make + " " + model + " " + year + " " + theRest;
+    return make + " " + model + " " + year + "  " + theRest;
   }
 }
